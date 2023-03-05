@@ -1,3 +1,4 @@
+import 'package:counter_bloc/Presentation/counter_screen2.dart';
 import 'package:counter_bloc/counter/bloc/bloc.dart';
 import 'package:counter_bloc/counter/bloc/event.dart';
 import 'package:counter_bloc/counter/bloc/states.dart';
@@ -5,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CounterScreen extends StatelessWidget {
-  const CounterScreen({super.key});
+  CounterBloc globalBloc = CounterBloc();
+   CounterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => CounterBloc(),
+        create: (context) => globalBloc,
         child: BlocConsumer<CounterBloc, CounterStates>(
             listener: (context, state) {
-          if (state is CounterSuccessState) {
-          }
+          if (state is CounterSuccessState) {}
         }, builder: (context, state) {
           int count = CounterBloc.get(context).count;
           return Scaffold(
@@ -24,6 +25,7 @@ class CounterScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FloatingActionButton(
+                  heroTag:const Text("btn2"),
                   onPressed: () {
                     CounterBloc.get(context).add(IncrementEvent());
                   },
@@ -40,11 +42,25 @@ class CounterScreen extends StatelessWidget {
                   width: 20.0,
                 ),
                 FloatingActionButton(
+                  heroTag: const Text("btn2"),
                   onPressed: () {
                     CounterBloc.get(context).add(DecrementEvent());
                   },
                   child: const Icon(Icons.remove),
                 ),
+                const SizedBox(
+                  width: 30.0,
+                ),
+                MaterialButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CounterScreen2()));
+                  },
+                  color: Colors.blue,
+                  child: const Text("Go To page2"),
+                )
               ],
             )),
           );
